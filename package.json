@@ -17,15 +17,22 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "docker:pull": "docker pull postgres && mkdir -p $HOME/docker/volumes/postgres",
+    "docker:run": "docker run --rm --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data  postgres"
   },
   "dependencies": {
     "@nestjs/common": "^6.0.0",
     "@nestjs/core": "^6.0.0",
     "@nestjs/platform-express": "^6.0.0",
+    "@nestjs/swagger": "^3.0.2",
+    "@nestjs/typeorm": "^6.1.2",
+    "pg": "^7.11.0",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
-    "rxjs": "^6.3.3"
+    "rxjs": "^6.3.3",
+    "swagger-ui-express": "^4.0.7",
+    "typeorm": "^0.2.18"
   },
   "devDependencies": {
     "@nestjs/testing": "^6.0.0",
