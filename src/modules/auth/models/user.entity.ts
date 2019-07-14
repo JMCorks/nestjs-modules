@@ -1,13 +1,29 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import * as bcrypt from 'bcrypt';
+import { Entity, Column, BeforeInsert, PrimaryGeneratedColumn } from 'typeorm';
+import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
+
+import { IDbUUIDModel } from '../../common/models/db-uuid-model';
 
 @Entity()
-export class User {
+export class User implements IDbUUIDModel {
+    @ApiModelPropertyOptional({ type: String })
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    id?: string;
 
+    @ApiModelProperty({ type: String })
     @Column()
     email: string;
 
-    @Column()
-    password: string;
+    @ApiModelPropertyOptional({ type: String })
+    @Column({ nullable: true })
+    password?: string;
+
+    @BeforeInsert()
+    cryptPassword() {
+        this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync());
+    }
+
+    comparePassword(cleanPassword) {
+        bcrypt.compareSync(cleanPassword, this.password);
+    }
 }
