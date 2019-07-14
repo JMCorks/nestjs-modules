@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Connection, Repository, DeleteResult, DeepPartial } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { InjectConnection } from '@nestjs/typeorm';
-import { IDbUUIDModel } from '../../models/db-uuid-model';
+import { DbUUIDModel } from '../../models/db-uuid-model';
 
 @Injectable()
-export class DbEntityHandlerService<T extends IDbUUIDModel> {
+export class DbEntityHandlerService<T extends DbUUIDModel> {
     protected repository: Repository<T>;
 
     constructor(@InjectConnection() protected readonly connection: Connection, modelType: any) {
