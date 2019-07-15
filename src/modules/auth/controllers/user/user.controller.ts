@@ -1,13 +1,17 @@
-import { Controller, Get, Query, Param, Post, Body, Put, Delete } from '@nestjs/common';
-import { ApiOkResponse, ApiImplicitParam, ApiCreatedResponse } from '@nestjs/swagger';
+import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards } from '@nestjs/common';
+import { ApiOkResponse, ApiImplicitParam, ApiCreatedResponse, ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 import { UserService } from '../../services/user/user.service';
 import { User } from '../../models/user.entity';
 
 import { DeleteResult } from 'typeorm';
 import { UserCreateInputModel } from '../../models/dtos/user-create-model.input';
 import { UserUpdateInputModel } from '../../models/dtos/user-update-model.input';
+import { AuthGuard } from '../../guards/auth.guard';
 
 @Controller('user')
+@UseGuards(AuthGuard)
+@ApiBearerAuth()
+@ApiUseTags('User')
 export class UserController {
     constructor(private readonly userService: UserService) { }
 
@@ -24,14 +28,14 @@ export class UserController {
         return this.userService.read(id);
     }
 
-    @ApiOkResponse({ type: UserCreateInputModel })
-    @ApiCreatedResponse({ type: UserCreateInputModel })
+    @ApiOkResponse({ type: User })
+    @ApiCreatedResponse({ type: User })
     @Post()
     create(@Body() body: UserCreateInputModel): Promise<User> {
         return this.userService.create(body);
     }
 
-    @ApiOkResponse({ type: UserUpdateInputModel })
+    @ApiOkResponse({ type: User })
     @ApiImplicitParam({ name: 'id', type: String })
     @Put('/:id')
     update(@Param('id') id, @Body() body: UserUpdateInputModel): Promise<User> {

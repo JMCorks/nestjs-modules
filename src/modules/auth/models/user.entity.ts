@@ -21,6 +21,7 @@ export class User extends DbUUIDModel {
     }
 
     comparePassword(cleanPassword): boolean {
-        return bcrypt.compareSync(cleanPassword, this.password);
+        //return bcrypt.compareSync(cleanPassword, this.password);
+        return cleanPassword === this.password;
     }
 }
