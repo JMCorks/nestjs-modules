@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { Entity, Column, BeforeInsert, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 
 import { DbUUIDModel } from '../../common/models/db-uuid-model';
 
@@ -10,16 +11,16 @@ export class User extends DbUUIDModel {
     @Column()
     email: string;
 
-    @ApiModelPropertyOptional({ type: String })
+    @Exclude()
     @Column({ nullable: true })
-    password?: string;
+    password: string;
 
     @BeforeInsert()
     cryptPassword() {
         this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync());
     }
 
-    comparePassword(cleanPassword) {
-        bcrypt.compareSync(cleanPassword, this.password);
+    comparePassword(cleanPassword): boolean {
+        return bcrypt.compareSync(cleanPassword, this.password);
     }
 }

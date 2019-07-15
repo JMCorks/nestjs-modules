@@ -4,6 +4,8 @@ import { UserService } from '../../services/user/user.service';
 import { User } from '../../models/user.entity';
 
 import { DeleteResult } from 'typeorm';
+import { UserCreateInputModel } from '../../models/dtos/user-create-model.input';
+import { UserUpdateInputModel } from '../../models/dtos/user-update-model.input';
 
 @Controller('user')
 export class UserController {
@@ -22,17 +24,17 @@ export class UserController {
         return this.userService.read(id);
     }
 
-    @ApiOkResponse({ type: User })
-    @ApiCreatedResponse({ type: User })
+    @ApiOkResponse({ type: UserCreateInputModel })
+    @ApiCreatedResponse({ type: UserCreateInputModel })
     @Post()
-    create(@Body() body: User): Promise<User> {
+    create(@Body() body: UserCreateInputModel): Promise<User> {
         return this.userService.create(body);
     }
 
-    @ApiOkResponse({ type: User })
+    @ApiOkResponse({ type: UserUpdateInputModel })
     @ApiImplicitParam({ name: 'id', type: String })
     @Put('/:id')
-    update(@Param('id') id, @Body() body: User): Promise<User> {
+    update(@Param('id') id, @Body() body: UserUpdateInputModel): Promise<User> {
         return this.userService.update(id, body);
     }
 

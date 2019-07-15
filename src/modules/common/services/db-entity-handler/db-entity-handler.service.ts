@@ -12,12 +12,12 @@ export class DbEntityHandlerService<T extends DbUUIDModel> {
         this.repository = this.connection.getRepository(modelType);
     }
 
-    create(entityData: T): Promise<T> {
+    create(entityData: Partial<T>): Promise<T> {
         const newInstance = this.repository.create(this.convertDeeppartial(entityData));
         return this.repository.save(this.convertDeeppartial(newInstance));
     }
 
-    async update(id: string, entityData: T): Promise<T> {
+    async update(id: string, entityData: Partial<T>): Promise<T> {
         if (id) {
             entityData.id = id;
         }
@@ -38,13 +38,13 @@ export class DbEntityHandlerService<T extends DbUUIDModel> {
         return this.repository.delete(id);
     }
 
-    private convertDeeppartial(model: T): DeepPartial<T> {
+    private convertDeeppartial(model: Partial<T>): DeepPartial<T> {
         //Dummy cast to avoid DeepPartial error... Fix later
         const convertedInstance: DeepPartial<T> = { ...model } as any;
         return convertedInstance;
     }
 
-    private convertQueryDeeppartial(model: T): QueryDeepPartialEntity<T> {
+    private convertQueryDeeppartial(model: Partial<T>): QueryDeepPartialEntity<T> {
         //Dummy cast to avoid QueryDeepPartialEntity error... Fix later
         const convertedInstance: QueryDeepPartialEntity<T> = { ...model } as any;
         return convertedInstance;
