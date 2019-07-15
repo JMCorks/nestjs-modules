@@ -3,6 +3,7 @@ import { Connection, Repository, DeleteResult, DeepPartial } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { InjectConnection } from '@nestjs/typeorm';
 import { DbUUIDModel } from '../../models/db-uuid-model';
+import * as uuid from 'uuid/v4';
 
 @Injectable()
 export class DbEntityHandlerService<T extends DbUUIDModel> {
@@ -14,7 +15,10 @@ export class DbEntityHandlerService<T extends DbUUIDModel> {
 
     create(entityData: Partial<T>): Promise<T> {
         const newInstance = this.repository.create(this.convertDeeppartial(entityData));
-        return this.repository.save(this.convertDeeppartial(newInstance));
+        newInstance.id = uuid();
+        this.repository.insert(this.convertQueryDeeppartial(newInstance));
+
+        return this.read(newInstance.id);
     }
 
     async update(id: string, entityData: Partial<T>): Promise<T> {
