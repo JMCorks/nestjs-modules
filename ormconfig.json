@@ -1,10 +1,10 @@
 {
-    "type": "postgres",
+    "type": "mysql",
     "host": "localhost",
-    "port": 5432,
-    "username": "postgres",
-    "password": "docker",
-    "database": "postgres",
+    "port": 3306,
+    "username": "root",
+    "password": "159357",
+    "database": "nestjs_modules",
     "entities": [
         "src/**/*.entity{.ts,.js}"
     ],
