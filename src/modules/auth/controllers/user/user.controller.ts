@@ -32,6 +32,7 @@ export class UserController {
     @ApiCreatedResponse({ type: User })
     @Post()
     create(@Body() body: UserCreateInputModel): Promise<User> {
+        body.password = this.userService.hashPassword(body.password);
         return this.userService.create(body);
     }
 

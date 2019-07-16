@@ -17,11 +17,11 @@ export class User extends DbUUIDModel {
 
     @BeforeInsert()
     cryptPassword() {
-        this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync());
+        //this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync());
     }
 
     comparePassword(cleanPassword): boolean {
-        //return bcrypt.compareSync(cleanPassword, this.password);
-        return cleanPassword === this.password;
+        return bcrypt.compareSync(cleanPassword, this.password);
+        //return cleanPassword === this.password;
     }
 }
